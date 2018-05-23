@@ -38,7 +38,7 @@ class GeoUaParserApiApplication {
 			}
 			else {
 				log.error "Deployment Failed with exception ", deployment.cause()
-			} 
+			}
 		})
 	}
 }
