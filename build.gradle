@@ -1,0 +1,56 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.10.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName 'geolocation-uaparser-api'
+}
+
+version = '1.0'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+springBoot {
+	executable = true
+}
+
+def vertxVersion = '3.5.1'
+
+dependencies {
+
+	//For GeoLocation
+	compile group: 'in.ankushs', name: 'Java-DB-IP', version: '2.0'
+
+	//User agent parser
+	compile group: 'com.blueconic', name: 'browscap-java', version: '1.2.2'
+	compile group: 'commons-io', name: 'commons-io', version: '2.5'
+
+
+	compile group: 'io.vertx', name: 'vertx-dropwizard-metrics', version: vertxVersion
+	compile group: 'io.vertx', name: 'vertx-core', version: vertxVersion
+	compile group: 'io.vertx', name: 'vertx-web', version: vertxVersion
+	compile group: 'io.vertx', name: 'vertx-redis-client', version: vertxVersion
+
+	compile('org.springframework.boot:spring-boot-starter')
+	compile('org.codehaus.groovy:groovy')
+	runtime('org.springframework.boot:spring-boot-devtools')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-3'
+	testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4-rc-3'
+
+}
