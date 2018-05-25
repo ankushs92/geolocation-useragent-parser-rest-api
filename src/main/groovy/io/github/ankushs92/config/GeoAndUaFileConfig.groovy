@@ -5,6 +5,7 @@ import com.blueconic.browscap.UserAgentParser
 import com.blueconic.browscap.UserAgentService
 import groovy.util.logging.Slf4j
 import in.ankushs.dbip.api.DbIpClient
+import io.github.ankushs92.util.EnvironmentUtil
 import org.apache.commons.io.FileUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -18,10 +19,23 @@ class GeoAndUaFileConfig {
     @Autowired
     private ResourceLoader resourceLoader
 
+    @Autowired
+    private EnvironmentUtil env
+
     @Bean(name = "dbIpClient")
     DbIpClient getDbIpClient() throws IOException {
-        def is = resourceLoader.getResource("classpath:dbip.csv.gz").inputStream
-        def targetFile = resourceLoader.getResource("classpath:dbip-Target.csv.gz").filename
+        //For test cases or non production profiles, run an empty dbip file
+        def fileName = "classpath:dbip.csv.gz"
+        if(env.isDev() || env.isTest()) {
+            fileName = "classpath:dbip-dev.csv.gz"
+        }
+        def targetFileName = "classpath:dbip-Target.csv.gz"
+        if(env.isDev() || env.isTest()) {
+            targetFileName = "classpath:dbip-dev-Target.csv.gz"
+        }
+
+        def is = resourceLoader.getResource(fileName).inputStream
+        def targetFile = resourceLoader.getResource(targetFileName).filename
         def file = new File(targetFile)
         FileUtils.copyInputStreamToFile(is, file)
         new DbIpClient(file)

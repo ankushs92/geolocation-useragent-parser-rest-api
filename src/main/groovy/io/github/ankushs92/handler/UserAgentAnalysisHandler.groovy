@@ -9,8 +9,8 @@ import io.vertx.core.json.Json
 import io.vertx.ext.web.RoutingContext
 import org.springframework.stereotype.Component
 
-import static io.github.ankushs92.constants.HttpHeaderValues.getAPPLICATION_JSON
-import static io.github.ankushs92.constants.HttpHeaderValues.getKEEP_ALIVE
+import static io.github.ankushs92.constants.HttpHeaderValues.APPLICATION_JSON
+import static io.github.ankushs92.constants.HttpHeaderValues.KEEP_ALIVE
 import static io.vertx.core.http.HttpHeaders.CONNECTION
 import static io.vertx.core.http.HttpHeaders.CONTENT_TYPE
 
@@ -34,15 +34,14 @@ class UserAgentAnalysisHandler implements Handler<RoutingContext> {
 
         def uaAnalysisFuture = uaParserService.parse(userAgent)
         uaAnalysisFuture.setHandler { ar ->
-            if(ar.succeeded()) {
+            if (ar.succeeded()) {
                 def browserCapabilities = ar.result()
                 log.debug 'BrowserCapabilities {}', browserCapabilities
                 def json = Json.encodePrettily(browserCapabilities)
                 resp.putHeader(CONTENT_TYPE, APPLICATION_JSON)
                     .putHeader(CONNECTION, KEEP_ALIVE)
                     .end(json)
-            }
-            else {
+            } else {
                 rc.fail(ar.cause())
             }
         }
@@ -50,7 +49,7 @@ class UserAgentAnalysisHandler implements Handler<RoutingContext> {
     }
 
     private static void validate(String ua) {
-        if(!Strings.hasText(ua)) {
+        if (!Strings.hasText(ua)) {
             throw new MandatoryParamMissingException("No ua was passed as param")
         }
     }

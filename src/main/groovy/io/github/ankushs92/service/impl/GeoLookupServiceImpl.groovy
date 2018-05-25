@@ -25,7 +25,7 @@ class GeoLookupServiceImpl implements GeoLookupService {
             def geoEntity = dbIpClient.lookup(ip)
             future.complete(geoEntity)
         }
-        catch(ex) {
+        catch (ex) {
             future.fail(ex)
         }
         future

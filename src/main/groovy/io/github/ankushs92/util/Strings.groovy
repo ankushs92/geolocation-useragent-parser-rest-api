@@ -13,12 +13,13 @@ class Strings {
     * if str has only whitespace after trimming it, then no
     * Otherwise, hell yes!
     * */
-    static boolean hasText(String str){
-        if(!str){
+
+    static boolean hasText(String str) {
+        if (!str) {
             return false
         }
         int length = str.trim().length()
-        if(length == 0){
+        if (length == 0) {
             return false
         }
         return true

@@ -14,31 +14,30 @@ import javax.annotation.PostConstruct
 @Slf4j
 class GeoUaParserApiApplication {
 
-	@Autowired
-	private Vertx vertx
+    @Autowired
+    private Vertx vertx
 
-	@Autowired
-	private SpringVerticleFactory springVerticleFactory
+    @Autowired
+    private SpringVerticleFactory springVerticleFactory
 
-	static void main(String[] args) {
-		SpringApplication.run GeoUaParserApiApplication, args
-	}
+    static void main(String[] args) {
+        SpringApplication.run GeoUaParserApiApplication, args
+    }
 
-	@PostConstruct
-	void init() {
-		vertx.registerVerticleFactory(springVerticleFactory)
-		def cores = Runtime.runtime.availableProcessors()
-		def numOfVerticlesToDeploy = cores * 2
-		log.info "Number of cores available {} " , cores
-		log.info "Deploying {} Verticles ", numOfVerticlesToDeploy
-		def options = new DeploymentOptions().setInstances(cores)
-		vertx.deployVerticle(springVerticleFactory.prefix() + ":" + ApiVerticle.class.name, options,{ deployment->
-			if(deployment.succeeded()) {
-				log.info "Deployment successful. Deployment Info {} ", deployment.result()
-			}
-			else {
-				log.error "Deployment Failed with exception ", deployment.cause()
-			}
-		})
-	}
+    @PostConstruct
+    void init() {
+        vertx.registerVerticleFactory(springVerticleFactory)
+        def cores = Runtime.runtime.availableProcessors()
+        def numOfVerticlesToDeploy = cores * 2
+        log.info "Number of cores available {} ", cores
+        log.info "Deploying {} Verticles ", numOfVerticlesToDeploy
+        def options = new DeploymentOptions().setInstances(cores)
+        vertx.deployVerticle(springVerticleFactory.prefix() + ":" + ApiVerticle.class.name, options, { deployment ->
+            if (deployment.succeeded()) {
+                log.info "Deployment successful. Deployment Info {} ", deployment.result()
+            } else {
+                log.error "Deployment Failed with exception ", deployment.cause()
+            }
+        })
+    }
 }

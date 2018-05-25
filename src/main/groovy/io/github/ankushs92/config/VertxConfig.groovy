@@ -21,12 +21,12 @@ class VertxConfig {
         Vertx.vertx(
                 new VertxOptions()
                         .setMetricsOptions(
-                            new DropwizardMetricsOptions()
-                                    .setEnabled(true)
+                        new DropwizardMetricsOptions()
+                                .setEnabled(true)
                 )
                 //TODO: This is a hack, and not a good idea. I'm doing this to avoid exceptions that will most definitely be thrown by Vert.x
                 //while loading the dbip file
-                .setBlockedThreadCheckInterval(100000000)
+                        .setBlockedThreadCheckInterval(100000000)
         )
     }
 
@@ -39,8 +39,8 @@ class VertxConfig {
     Router router() {
         Router.router(vertx())
                 .exceptionHandler { ex ->
-                    log.error 'Unhandled {}', ex
-                }
+            log.error 'Unhandled {}', ex
+        }
     }
 
 }

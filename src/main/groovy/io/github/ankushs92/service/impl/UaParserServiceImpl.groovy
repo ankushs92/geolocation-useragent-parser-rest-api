@@ -18,13 +18,13 @@ class UaParserServiceImpl implements UaParserService {
 
     @Override
     Future<BrowserCapabilities> parse(String ua) {
-        Assert.nonEmptyString(ua,"userAgent cannot be null")
+        Assert.nonEmptyString(ua, "userAgent cannot be null")
         def future = Future.future()
         try {
             def capabilities = uaParser.parse(ua)
             future.complete(new BrowserCapabilities(capabilities))
         }
-        catch(ex) {
+        catch (ex) {
             future.fail(ex)
         }
         future

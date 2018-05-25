@@ -16,7 +16,7 @@ class MetricsConfig {
     private Vertx vertx
 
     @Bean("metricsService")
-    MetricsService metrics(){
+    MetricsService metrics() {
         MetricsService.create(vertx)
     }
 }

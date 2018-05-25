@@ -9,8 +9,8 @@ import io.vertx.core.json.Json
 import io.vertx.ext.web.RoutingContext
 import org.springframework.stereotype.Component
 
-import static io.github.ankushs92.constants.HttpHeaderValues.getAPPLICATION_JSON
-import static io.github.ankushs92.constants.HttpHeaderValues.getKEEP_ALIVE
+import static io.github.ankushs92.constants.HttpHeaderValues.APPLICATION_JSON
+import static io.github.ankushs92.constants.HttpHeaderValues.KEEP_ALIVE
 import static io.vertx.core.http.HttpHeaders.CONNECTION
 import static io.vertx.core.http.HttpHeaders.CONTENT_TYPE
 
@@ -34,15 +34,14 @@ class GeoHandler implements Handler<RoutingContext> {
 
         def geoFuture = geoLookupService.lookup(ip)
         geoFuture.setHandler { ar ->
-            if(ar.succeeded()) {
+            if (ar.succeeded()) {
                 def geo = ar.result()
                 log.debug 'GeoEntity {}', geo
                 def json = Json.encodePrettily(geo)
                 resp.putHeader(CONTENT_TYPE, APPLICATION_JSON)
-                    .putHeader(CONNECTION, KEEP_ALIVE)
-                    .end(json)
-            }
-            else {
+                        .putHeader(CONNECTION, KEEP_ALIVE)
+                        .end(json)
+            } else {
                 rc.fail(ar.cause())
             }
         }
@@ -50,7 +49,7 @@ class GeoHandler implements Handler<RoutingContext> {
     }
 
     private static void validate(String ip) {
-        if(!Strings.hasText(ip)) {
+        if (!Strings.hasText(ip)) {
             throw new MandatoryParamMissingException("No ip was passed as param")
         }
     }

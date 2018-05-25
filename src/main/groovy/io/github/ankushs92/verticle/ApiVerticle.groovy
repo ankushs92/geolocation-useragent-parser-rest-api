@@ -24,8 +24,7 @@ class ApiVerticle extends AbstractVerticle {
             GeoAndUserAgentAnalysisHandler geoAndUserAgentAnalysisHandler,
             GlobalFailureHandler failureHandler,
             MetricsHandler metricsHandler
-    )
-    {
+    ) {
         this.router = router
         this.geoHandler = geoHandler
         this.userAgentAnalysisHandler = userAgentAnalysisHandler
@@ -39,20 +38,20 @@ class ApiVerticle extends AbstractVerticle {
     void start() {
 
         router.get("/geo")
-              .handler(geoHandler)
-              .failureHandler(failureHandler)
+                .handler(geoHandler)
+                .failureHandler(failureHandler)
 
         router.get('/metrics')
-              .handler(metricsHandler)
-              .failureHandler(failureHandler)
+                .handler(metricsHandler)
+                .failureHandler(failureHandler)
 
         router.get('/uaAnalysis')
-              .handler(userAgentAnalysisHandler)
-              .failureHandler(failureHandler)
+                .handler(userAgentAnalysisHandler)
+                .failureHandler(failureHandler)
 
         router.get('/geoAndUserAgentAnalysis')
-              .handler(geoAndUserAgentAnalysisHandler)
-              .failureHandler(failureHandler)
+                .handler(geoAndUserAgentAnalysisHandler)
+                .failureHandler(failureHandler)
 
     }
 }

@@ -81,7 +81,7 @@ class BrowserCapabilities {
         this.cssVersion = capabilities.getValue(CSS_VERSION)
         this.aolVersion = capabilities.getValue(AOL_VERSION)
         this.deviceName = capabilities.getValue(DEVICE_NAME)
-        this.deviceMaker= capabilities.getValue(DEVICE_MAKER)
+        this.deviceMaker = capabilities.getValue(DEVICE_MAKER)
         this.deviceType = capabilities.getValue(DEVICE_TYPE)
         this.devicePointingMethod = capabilities.getValue(DEVICE_POINTING_METHOD)
         this.deviceCodeName = capabilities.getValue(DEVICE_CODE_NAME)

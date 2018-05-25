@@ -11,8 +11,8 @@ import io.vertx.core.json.Json
 import io.vertx.ext.web.RoutingContext
 import org.springframework.stereotype.Component
 
-import static io.github.ankushs92.constants.HttpHeaderValues.getAPPLICATION_JSON
-import static io.github.ankushs92.constants.HttpHeaderValues.getKEEP_ALIVE
+import static io.github.ankushs92.constants.HttpHeaderValues.APPLICATION_JSON
+import static io.github.ankushs92.constants.HttpHeaderValues.KEEP_ALIVE
 import static io.vertx.core.http.HttpHeaders.CONNECTION
 import static io.vertx.core.http.HttpHeaders.CONTENT_TYPE
 
@@ -26,8 +26,7 @@ class GeoAndUserAgentAnalysisHandler implements Handler<RoutingContext> {
     GeoAndUserAgentAnalysisHandler(
             GeoLookupService geoLookupService,
             UaParserServiceImpl uaParserService
-    )
-    {
+    ) {
         this.geoLookupService = geoLookupService
         this.uaParserService = uaParserService
     }
@@ -45,33 +44,32 @@ class GeoAndUserAgentAnalysisHandler implements Handler<RoutingContext> {
         def uaAnalysisFuture = uaParserService.parse(userAgent)
 
         CompositeFuture.all(geoFuture, uaAnalysisFuture)
-                       .setHandler { ar ->
-                            if(ar.succeeded()) {
-                                def results = ar.result().list()
-                                def geo = results[0]
-                                def browserCapabilities = results[1]
+                .setHandler { ar ->
+            if (ar.succeeded()) {
+                def results = ar.result().list()
+                def geo = results[0]
+                def browserCapabilities = results[1]
 
-                                log.debug 'Geo {}', geo
-                                log.debug 'BrowserCapabilities {}', browserCapabilities
+                log.debug 'Geo {}', geo
+                log.debug 'BrowserCapabilities {}', browserCapabilities
 
-                                def json = Json.encodePrettily([
-                                        geo : geo,
-                                        uaAnalysis : browserCapabilities
-                                ])
-                                resp.putHeader(CONTENT_TYPE, APPLICATION_JSON)
-                                    .putHeader(CONNECTION, KEEP_ALIVE)
-                                    .end(json)
-                            }
-                            else {
-                                rc.fail(ar.cause())
-                            }
-                       }
+                def json = Json.encodePrettily([
+                        geo       : geo,
+                        uaAnalysis: browserCapabilities
+                ])
+                resp.putHeader(CONTENT_TYPE, APPLICATION_JSON)
+                        .putHeader(CONNECTION, KEEP_ALIVE)
+                        .end(json)
+            } else {
+                rc.fail(ar.cause())
+            }
+        }
 
     }
 
 
     private static void validate(String ip, String userAgent) {
-        if(!(Strings.hasText(ip) && Strings.hasText(userAgent))) {
+        if (!(Strings.hasText(ip) && Strings.hasText(userAgent))) {
             throw new MandatoryParamMissingException("One or both out of required params were missing : ip , ua")
         }
     }
