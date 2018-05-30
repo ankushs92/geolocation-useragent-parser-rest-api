@@ -34,16 +34,17 @@ class GeoHandler implements Handler<RoutingContext> {
 
         def geoFuture = geoLookupService.lookup(ip)
         geoFuture.setHandler { ar ->
-            if (ar.succeeded()) {
-                def geo = ar.result()
-                log.debug 'GeoEntity {}', geo
-                def json = Json.encodePrettily(geo)
-                resp.putHeader(CONTENT_TYPE, APPLICATION_JSON)
+                if (ar.succeeded()) {
+                    def geo = ar.result()
+                    log.debug 'GeoEntity {}', geo
+                    def json = Json.encodePrettily(geo)
+                    resp.putHeader(CONTENT_TYPE, APPLICATION_JSON)
                         .putHeader(CONNECTION, KEEP_ALIVE)
                         .end(json)
-            } else {
-                rc.fail(ar.cause())
-            }
+                }
+                else {
+                    rc.fail(ar.cause())
+                }
         }
 
     }

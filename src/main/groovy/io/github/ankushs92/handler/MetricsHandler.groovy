@@ -31,7 +31,8 @@ class MetricsHandler implements Handler<RoutingContext> {
     MetricsHandler(
             Vertx vertx,
             MetricsService metricsService
-    ) {
+    )
+    {
         this.metricsService = metricsService
         this.vertx = vertx
     }
@@ -49,7 +50,7 @@ class MetricsHandler implements Handler<RoutingContext> {
             def jsonMetrics = metricsService.getMetricsSnapshot(vertx)
             def json = Json.encodePretty(jsonMetrics)
             resp.putHeader(CONTENT_TYPE, APPLICATION_JSON)
-                    .end(json)
+                .end(json)
         }
     }
 }

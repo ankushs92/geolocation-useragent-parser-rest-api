@@ -34,18 +34,18 @@ class UserAgentAnalysisHandler implements Handler<RoutingContext> {
 
         def uaAnalysisFuture = uaParserService.parse(userAgent)
         uaAnalysisFuture.setHandler { ar ->
-            if (ar.succeeded()) {
-                def browserCapabilities = ar.result()
-                log.debug 'BrowserCapabilities {}', browserCapabilities
-                def json = Json.encodePrettily(browserCapabilities)
-                resp.putHeader(CONTENT_TYPE, APPLICATION_JSON)
-                    .putHeader(CONNECTION, KEEP_ALIVE)
-                    .end(json)
-            } else {
-                rc.fail(ar.cause())
-            }
+                if (ar.succeeded()) {
+                    def browserCapabilities = ar.result()
+                    log.debug 'BrowserCapabilities {}', browserCapabilities
+                    def json = Json.encodePrettily(browserCapabilities)
+                    resp.putHeader(CONTENT_TYPE, APPLICATION_JSON)
+                        .putHeader(CONNECTION, KEEP_ALIVE)
+                        .end(json)
+                }
+                else {
+                    rc.fail(ar.cause())
+                }
         }
-
     }
 
     private static void validate(String ua) {
